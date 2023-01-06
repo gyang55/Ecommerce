@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { createContext, useState } from "react";
-
-import PRODUCTS from "../shop-data.json";
+import { getCategoriesAndDocuments } from "../utils/firebase/firebase.util";
 
 const addCartItem = (cartItems, productToAdd) => {
   //find if cartItems contains productToAdd
@@ -42,8 +41,8 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 const clearCartItem = (cartItems, cartItemToClear) => {
  return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 };
-export const ProductsContext = createContext({
-  products: [],
+export const CategoriesContext = createContext({
+  categoriesMap: [],
   isCartOpen: false,
   setIsCartOpen: () => {},
   cartItems: [],
@@ -54,12 +53,21 @@ export const ProductsContext = createContext({
   cartTotal:0
 });
 
-export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState(PRODUCTS);
+export const CategoriesProvider = ({ children }) => {
+  const [categoriesMap, setCategoriesMap] = useState({});
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal,setCartTotal] = useState(0)
+
+
+  useEffect(()=>{
+    const getCategoriesMap = async ()=>{
+      const categoryMap = await getCategoriesAndDocuments()
+      setCategoriesMap(categoryMap)
+    }
+    getCategoriesMap()
+  },[])
 
   useEffect(() => {
     const newCartCount = cartItems.reduce((total, cartItem) => {
@@ -85,8 +93,8 @@ export const ProductsProvider = ({ children }) => {
     setCartItems(clearCartItem(cartItems, cartItemToClear));
   };
   const productsValue = {
-    products,
-    setProducts,
+    categoriesMap,
+    setCategoriesMap,
     isCartOpen,
     setIsCartOpen,
     cartItems,
@@ -98,8 +106,8 @@ export const ProductsProvider = ({ children }) => {
     cartTotal
   };
   return (
-    <ProductsContext.Provider value={productsValue}>
+    <CategoriesContext.Provider value={productsValue}>
       {children}
-    </ProductsContext.Provider>
+    </CategoriesContext.Provider>
   );
 };

@@ -7,11 +7,11 @@ import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import "./navigation.styles.scss";
 import { UserContext } from "../../context/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.util";
-import { ProductsContext } from "../../context/shop.Context";
+import { CategoriesContext } from "../../context/shop.Context";
 
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
-  const { isCartOpen } = useContext(ProductsContext);
+  const { isCartOpen } = useContext(CategoriesContext);
   return (
     <Fragment>
       <div className="navigation">

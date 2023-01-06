@@ -1,11 +1,11 @@
 import "./product-card.styles.scss";
 import React from "react";
 import Button from "../button/button.component";
-import {ProductsContext} from '../../context/shop.Context'
+import {CategoriesContext} from '../../context/shop.Context'
 import { useContext } from "react";
 export default function ProductCard({ product }) {
   const { name, price, imageUrl } = product;
-  const {addItemToCart}=useContext(ProductsContext)
+  const {addItemToCart}=useContext(CategoriesContext)
   const addProductToCart = ()=>addItemToCart(product)
   return (
     <div className="product-card-container">
