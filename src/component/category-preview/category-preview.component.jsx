@@ -10,8 +10,7 @@ export default function CategoryPreview({ title, products }) {
       </h2>
       <div className="preview">
         {
-          products
-           
+          products         
             .map((product,index) => {
               if(index<4){
                 return  <ProductCard key={product.id} product={product} />;
